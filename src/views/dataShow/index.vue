@@ -1,9 +1,12 @@
 <template>
   <div class="data-show">
     <div class="data-show-title">中科易贺气象监测数据展示</div>
-    <div class="tick">{{ tick | dateFormat("yyyy年MM月dd日 HH:mm:ss") }}</div>
+    <div class="tick">{{ tick | dateFormat('yyyy年MM月dd日 HH:mm:ss') }}</div>
     <div class="data-show-container">
-      <div class="left" />
+      <div class="left">
+        <temperature />
+        <conductivity />
+      </div>
       <div class="center" />
       <div class="right" />
     </div>
@@ -11,8 +14,12 @@
 </template>
 
 <script type='text/ecmascript-6'>
+import Temperature from '@/views/dataShow/components/Temperature'
+import Conductivity from '@/views/dataShow/components/Conductivity'
+
 export default {
   name: 'DataShow',
+  components: { Temperature, Conductivity },
   data () {
     return {
       tick: new Date()
@@ -58,12 +65,31 @@ export default {
   .data-show-container {
     display: flex;
     height: 100%;
+
     & > div {
-      flex: 1;
+      width: 550*$wPer;
     }
+
     & > div:nth-child(2) {
-      flex: 2;
+      width: 820*$wPer;
     }
+
+    .left {
+      padding-left: 70*$rem;
+      & > div {
+        margin-top: 16*$rem;
+      }
+      & > div:first-child {
+        margin-top: 0;
+      }
+    }
+  }
+
+  .title {
+    font-size: 16*$rem;
+    font-weight: bold;
+    color: rgba(0, 255, 255, 1);
+    margin: 7*$rem 14*$rem;
   }
 }
 </style>

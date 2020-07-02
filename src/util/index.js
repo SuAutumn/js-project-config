@@ -27,3 +27,19 @@ export function dateFormat (date, fmt) {
   }
   return ''
 }
+
+export function generatorRandNum (min, max) {
+  if (min === void 0) {
+    min = 0
+  }
+  if (max === void 0) {
+    max = 1
+  }
+  return min + Math.floor(Math.random() * (max - min))
+}
+
+export function emptyArr (len) {
+  const arr = []
+  arr.length = len
+  return arr.fill(undefined)
+}
