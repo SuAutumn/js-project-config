@@ -15,5 +15,9 @@ module.exports = {
         })
         .end()
     })
+  },
+  publicPath: './',
+  configureWebpack: {
+    devtool: false
   }
 }

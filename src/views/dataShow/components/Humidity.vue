@@ -1,4 +1,4 @@
-<!--温度数据-->
+<!--湿度数据-->
 <template>
   <div class="temp">
     <div ref="tempChart" class="temp-chart" />
@@ -19,13 +19,13 @@ import { dateFormat, emptyArr, generatorRandNum } from '@/util'
 const option = {
   color: ['#fff'],
   title: Object.assign({
-    text: '温度实况(℃)'
+    text: '湿度实况(%RH)'
   }, titleStyle),
   tooltip: {
     trigger: 'axis'
   },
   legend: Object.assign({
-    data: ['空气温度', '土壤温度']
+    data: ['空气湿度', '土壤湿度']
   }, legend),
   grid: {
     top: '15%',
@@ -36,9 +36,7 @@ const option = {
   },
   xAxis: {
     type: 'category',
-    axisLine: Object.assign({
-      onZero: false
-    }, axisLine),
+    axisLine,
     axisLabel,
     axisTick,
     splitNumber: 12,
@@ -53,45 +51,45 @@ const option = {
     axisLabel: Object.assign({}, axisLabel),
     axisLine,
     axisTick,
-    min: -30,
-    max: 50,
+    min: 0,
+    max: 80,
     interval: 10,
     splitLine: ySplitLine
   },
   series: [
     Object.assign({
-      name: '空气温度',
+      name: '空气湿度',
       data: emptyArr(13).map((val, i) => {
         return {
-          value: generatorRandNum(20, 28)
+          value: generatorRandNum(40, 50)
         }
       }),
       type: 'line',
       areaStyle: {
         origin: 'start',
-        color: linearGradient('#1D97FF', '#1DD7FF00')
+        color: linearGradient('#1DA7FF80', '#1DA7FF80', '#0280CF00')
       },
       color: '#1D97FF'
     }, seriesLabel),
     Object.assign({
-      name: '土壤温度',
+      name: '土壤湿度',
       data: emptyArr(13).map((val, i) => {
         return {
-          value: generatorRandNum(12, 15)
+          value: generatorRandNum(30, 40)
         }
       }),
       type: 'line',
       areaStyle: {
         origin: 'start',
-        color: linearGradient('#FFC21D', '#FF871D00')
+        color: linearGradient('#1DE7FF80', '#04B1D600')
       },
-      color: '#FFC21D'
+      color: '#02DEFB'
     }, seriesLabel)
   ]
 }
 
 export default {
-  name: 'Temperature',
+  name: 'Humidity',
   mounted () {
     this.myChart = echarts.init(this.$refs.tempChart)
     this.myChart.setOption(option)

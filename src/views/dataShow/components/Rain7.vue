@@ -1,7 +1,7 @@
-<!--土壤电导率实况(us/cm)-->
+<!--近七日日降雨量(mm)-->
 <template>
-  <div class="conductivity">
-    <div ref="condChart" class="cond-chart" />
+  <div class="rain7">
+    <div ref="rain7" class="rain7-chart" />
   </div>
 </template>
 
@@ -10,7 +10,7 @@ import echarts from 'echarts'
 import {
   axisLabel,
   axisLine,
-  axisTick, seriesLabel, titleStyle,
+  axisTick, linearGradient, rem, titleStyle,
   xSplitLine,
   ySplitLine
 } from '@/views/dataShow/staticEchartsSetting'
@@ -19,17 +19,15 @@ import { dateFormat, emptyArr, generatorRandNum } from '@/util'
 const option = {
   color: ['#fff'],
   title: Object.assign({
-    text: '土壤电导率实况(us/cm)'
+    text: '近七日日降雨量(mm)'
   }, titleStyle),
+  tooltip: { trigger: 'axis' },
   grid: {
     top: '25%',
     bottom: '2%',
-    left: '3%',
+    left: '5%',
     right: '8%',
     containLabel: true
-  },
-  tooltip: {
-    trigger: 'axis'
   },
   xAxis: {
     type: 'category',
@@ -38,48 +36,38 @@ const option = {
     }, axisLine),
     axisLabel,
     axisTick,
-    splitNumber: 12,
     splitLine: xSplitLine,
-    data: emptyArr(13).map((val, i) => {
-      return dateFormat(new Date(Date.now() - (13 - i) * 60 * 60 * 1000), 'H:00')
-    }),
-    boundaryGap: false
+    data: emptyArr(7).map((val, i) => {
+      return dateFormat(new Date(Date.now() - (7 - i) * 24 * 60 * 60 * 1000), 'MM-dd')
+    })
   },
   yAxis: {
     type: 'value',
     axisLabel,
     axisLine,
     axisTick,
-    min: 0,
-    max: 1000,
-    interval: 200,
+    // min: 0,
+    // max: 60,
+    // interval: 10,
     splitLine: ySplitLine
   },
   series: [
-    Object.assign({
-      name: '土壤电导率实况(us/cm)',
-      data: emptyArr(13).map((val, i) => {
-        return {
-          value: generatorRandNum(180, 400)
-        }
-      }),
-      type: 'line',
-      color: '#64CEFF',
-      symbol: 'circle'
-    }, seriesLabel, {
-      label: {
-        normal: {
-          show: false
-        }
+    {
+      type: 'bar',
+      name: '降水量（mm）',
+      data: emptyArr(7).map(() => generatorRandNum(0, 50)),
+      barWidth: rem(24),
+      itemStyle: {
+        color: linearGradient('#00FFAE', '#1CDCFF', '#1DA7FF')
       }
-    })
+    }
   ]
 }
 
 export default {
-  name: 'Conductivity',
+  name: 'Rain7',
   mounted () {
-    this.myChart = echarts.init(this.$refs.condChart)
+    this.myChart = echarts.init(this.$refs.rain7)
     this.myChart.setOption(option)
   },
   beforeDestroy () {
@@ -90,13 +78,13 @@ export default {
 
 <style lang="scss">
 .data-show {
-  .conductivity {
+  .rain7 {
     height: 160*$rem;
     border: 1px solid rgb(38, 58, 118);
     border-radius: 4px;
     overflow: hidden;
 
-    .cond-chart {
+    .rain7-chart {
       height: 100%;
     }
   }

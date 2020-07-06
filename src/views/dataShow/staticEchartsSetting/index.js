@@ -1,6 +1,6 @@
 const clientWidth = document.body.clientWidth
 
-function rem (fontSize) {
+export function rem (fontSize) {
   return fontSize * clientWidth / 1920
 }
 
@@ -51,23 +51,25 @@ export const seriesLabel = {
       position: 'top',
       color: '#fff'
     }
+  },
+  lineStyle: {
+    width: 1
   }
 }
 
-export const linearGradient = (color1, color2) => {
+export const linearGradient = (...colors) => {
   return {
     type: 'linear',
     x: 0,
     y: 0,
     x2: 0,
     y2: 1,
-    colorStops: [
-      {
-        offset: 0, color: color1 // 0% 处的颜色
-      }, {
-        offset: 1, color: color2 // 100% 处的颜色
+    colorStops: colors.map((color, i) => {
+      return {
+        offset: i / (colors.length - 1),
+        color
       }
-    ]
+    })
   }
 }
 
@@ -79,5 +81,5 @@ export const legend = {
     fontSize: rem(12)
   },
   top: '2%',
-  right: '2%'
+  right: '7%'
 }

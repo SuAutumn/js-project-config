@@ -1,7 +1,7 @@
-<!--温度数据-->
+<!--空气中CO2含量实况(ppm)-->
 <template>
-  <div class="temp">
-    <div ref="tempChart" class="temp-chart" />
+  <div class="co2">
+    <div ref="co2Chart" class="co2-chart" />
   </div>
 </template>
 
@@ -10,7 +10,7 @@ import echarts from 'echarts'
 import {
   axisLabel,
   axisLine,
-  axisTick, legend, linearGradient, seriesLabel, titleStyle,
+  axisTick, seriesLabel, titleStyle,
   xSplitLine,
   ySplitLine
 } from '@/views/dataShow/staticEchartsSetting'
@@ -19,20 +19,17 @@ import { dateFormat, emptyArr, generatorRandNum } from '@/util'
 const option = {
   color: ['#fff'],
   title: Object.assign({
-    text: '温度实况(℃)'
+    text: '空气中CO2含量实况(ppm)'
   }, titleStyle),
-  tooltip: {
-    trigger: 'axis'
-  },
-  legend: Object.assign({
-    data: ['空气温度', '土壤温度']
-  }, legend),
   grid: {
-    top: '15%',
-    bottom: '5%',
-    left: '5%',
+    top: '25%',
+    bottom: '2%',
+    left: '2%',
     right: '8%',
     containLabel: true
+  },
+  tooltip: {
+    trigger: 'axis'
   },
   xAxis: {
     type: 'category',
@@ -50,50 +47,39 @@ const option = {
   },
   yAxis: {
     type: 'value',
-    axisLabel: Object.assign({}, axisLabel),
+    axisLabel,
     axisLine,
     axisTick,
-    min: -30,
-    max: 50,
-    interval: 10,
+    min: 0,
+    max: 1000,
+    interval: 200,
     splitLine: ySplitLine
   },
   series: [
     Object.assign({
-      name: '空气温度',
+      name: '空气中CO2含量实况(ppm)',
       data: emptyArr(13).map((val, i) => {
         return {
-          value: generatorRandNum(20, 28)
+          value: generatorRandNum(180, 400)
         }
       }),
       type: 'line',
-      areaStyle: {
-        origin: 'start',
-        color: linearGradient('#1D97FF', '#1DD7FF00')
-      },
-      color: '#1D97FF'
-    }, seriesLabel),
-    Object.assign({
-      name: '土壤温度',
-      data: emptyArr(13).map((val, i) => {
-        return {
-          value: generatorRandNum(12, 15)
+      color: '#09FFC8',
+      symbol: 'circle'
+    }, seriesLabel, {
+      label: {
+        normal: {
+          show: false
         }
-      }),
-      type: 'line',
-      areaStyle: {
-        origin: 'start',
-        color: linearGradient('#FFC21D', '#FF871D00')
-      },
-      color: '#FFC21D'
-    }, seriesLabel)
+      }
+    })
   ]
 }
 
 export default {
-  name: 'Temperature',
+  name: 'CO2',
   mounted () {
-    this.myChart = echarts.init(this.$refs.tempChart)
+    this.myChart = echarts.init(this.$refs.co2Chart)
     this.myChart.setOption(option)
   },
   beforeDestroy () {
@@ -104,13 +90,13 @@ export default {
 
 <style lang="scss">
 .data-show {
-  .temp {
-    height: 272*$rem;
+  .co2 {
+    height: 160*$rem;
     border: 1px solid rgb(38, 58, 118);
     border-radius: 4px;
     overflow: hidden;
 
-    .temp-chart {
+    .co2-chart {
       height: 100%;
     }
   }
